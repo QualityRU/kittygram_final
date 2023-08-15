@@ -1,28 +1,68 @@
-## Перепишу
+<div id="header" align="center">
+  <img src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="100"/>
+</div>
+<div id="badges" align="center">
+  <img src="https://img.shields.io/badge/Python-blue?style=for-the-badge&logo=python&logoColor=yellow" alt="Python"/>
+  <img src="https://img.shields.io/badge/React-white?style=for-the-badge&logo=react&logoColor=blue" alt="React"/>
+  <img src="https://img.shields.io/badge/Django-dark_green?style=for-the-badge&logo=django&logoColor=white" alt="Django"/>
+  <img src="https://img.shields.io/badge/Docker-blue?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/>
+  <img src="https://img.shields.io/badge/PostgreSQL-white?style=for-the-badge&logo=postgresql&logoColor=blue" alt="PostgreSQL"/>
 
-#  Как работать с репозиторием финального задания
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=25&pause=500&color=F70000&center=true&vCenter=true&width=435&lines=Kittygram" alt="Kittygram" /></a>
+</div>
 
-## Что нужно сделать
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+### Описание:
+Социальный сайт для публикации фотограций котиков с их достижениями.
 
-## Как проверить работу с помощью автотестов
+### Технологии используемые в проекте:
+- Django==3.2.3
+- djangorestframework==3.12.4
+- djoser==2.1.0
+- webcolors==1.11.1
+- Pillow==9.0.0
+- pytest==6.2.4
+- pytest-django==4.4.0
+- pytest-pythonpath==0.7.3
+- gunicorn==20.1.0
+- python-dotenv==1.0.0
+- nodejs==v18.17.0
+- npm==9.6.7
+- PostgreSQL==13
+- Docker
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+### Инструкция по деплою
+1) Установите curl, docker и docker-compose-plugin
+```
+sudo apt update && sudo apt install curl
+```
+```
+curl -fSL https://get.docker.com -o get-docker.sh && sudo sh ./get-docker.sh
+```
+```
+sudo apt-get install docker-compose-plugin
+```
+2) Перейдите в папку `kittygram` и скопируйте `.env.example` в `.env`. Заполните его своими данными
+
+3) Создайте и скопируйте содержимое `docker-compose.production.yml` удобым вам способом в корневую папку `kittygram` и запустите установку контейнеров продакшн версии
+```
+sudo docker compose -f docker-compose.production.yml up -d
+```
+4) Примените миграции, создайте статические файлы для админки и скопируйте статику в директорию веб-сервера
+```
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+```
+```
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+```
+```
+sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collect_static/ /static_backend/static/
+```
+5) Создайте суперпользователя
+```
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser
 ```
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
-
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
-
-## Чек-лист для проверки перед отправкой задания
-
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+### Автор:
+#### Первоначальное авторское право © 2020 Яндекс.Практикум <https://github.com/yandex-praktikum>
+#### Раздвоенное авторское право © 2023 Quality <mr.quality@ya.ru>
